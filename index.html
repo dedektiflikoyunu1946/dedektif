@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dosya Girişi</title>
+</head>
+<body style="text-align:center; margin-top:100px; font-family:Arial, sans-serif;">
+
+  <h2>Şifre gir</h2>
+  <input type="password" id="sifre" placeholder="Şifre">
+  <br><br>
+  <button onclick="kontrol()">Giriş</button>
+
+  <script>
+    async function sha256(text) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(text);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    async function kontrol() {
+      const girilenSifre = document.getElementById("sifre").value;
+
+      // Buraya kendi şifrenin SHA-256 hash'ini yaz
+      const dogruHash = "bc520fd25b632f3f4ee047efcb29253c501ea5b7982704020f2fe51a2be77254";
+
+      const girilenHash = await sha256(girilenSifre);
+
+      if (girilenHash === dogruHash) {
+        window.location.href = "https://drive.google.com/drive/folders/1iw3esuy3LTnBDuplWPi8B7wp9ADDvB6d?usp=sharing";
+      } else {
+        alert("Yanlış şifre");
+      }
+    }
+  </script>
+
+</body>
+</html>
